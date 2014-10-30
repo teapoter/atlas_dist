@@ -1,0 +1,18 @@
+文件结构:
+log ---------日志目录
+lst ---------待更新ip列表文件夹
+tools -------脚本执行目录
+batch_run.sh-串行脚本
+sync_run.sh--并行脚本
+
+使用方法:
+以并行脚本sync_run.sh为例,
+1. 在tools目录下mkdir  dfw_agent_2.3.2/
+2. 在dfw_agent_2.3.2/目录下把需要更新的agent.tar包放进去, 并把tar包的md5sum写入cmd.sh中DFW_AGENT_MD5SUM
+3. 在lst 目录下touch xxx.lst, 把待更新的ip写入, 按行分割
+4. ./sync_run.sh ./lst/xxx.lst root passwd ./tools/dfw_agent_2.3.2/ [agent版本号]
+5. sync_run会把 tools/dfw_agent_2.3.3 整个目录 rsync 到待更新机器的/tmp 目录下, 并执行/tmp/dfw_agent_2.3.3/cmd.sh
+
+执行结果:
+log目录下可以查看执行的日志
+

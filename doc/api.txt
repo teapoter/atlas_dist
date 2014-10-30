@@ -1,0 +1,68 @@
+1.basic request format(need callback):
+{
+    "header":
+    {
+        "version":"1.0",
+        "type":"Json"
+        "time":23145,
+        "callback_ip":"10.190.49.69",
+        "callback_port:":9990,
+        "callback_url":"/demo/api/callback",
+        "callback_protocal":"http"
+    },
+    "body":
+    {
+        "method":"",
+        "type":"default",
+        "data":{}
+    }
+}
+
+2.callback response format:
+#main function:update task status and write result
+{
+    "header":
+    {
+        "version":"1.0",
+        "type":"Json"
+        "time":23145,
+        "operator":"",
+        "ip":""
+    },
+    "body":
+    {
+        "method":"",
+        "type":"callback",
+        "data":{
+            "taskid":"",
+            "detail":[{}]
+        }
+    }
+}
+
+
+agent请求的任务执行的格式
+{
+    "header":
+    {
+        "version":"1.0",
+        "type":"Json"
+        "time":23145,
+        "operator":"",
+        "ip":""
+    },
+    "body":
+    {
+        "method":"",
+        "type":"callback",
+        "data":{
+            "taskid":"",
+            "detail":[{
+            "sriptContent":"",
+            "sriptName":""
+            }],
+            ""
+        }
+    }
+}
+

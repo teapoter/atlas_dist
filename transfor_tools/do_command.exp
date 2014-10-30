@@ -1,0 +1,54 @@
+#!/usr/bin/expect  -- 
+#penghao@tencent.com
+#exp_internal 1
+set timeout 30
+set passwd [lindex $argv 3]
+
+if { [llength $argv] < 4} {
+  puts "usage: $argv0 user ip cmd pwd"
+  exit 1
+}
+
+proc wait {} {
+    expect {
+        "$*" { puts "\n" }
+        ">*" { puts "\n" }
+        "#*" { puts "\n" }
+        "*assword*" {send "\n"; puts "\nPassword error" ; exit 1}
+    }
+}
+
+spawn	/usr/bin/ssh -q -p36000 [lindex $argv 0]@[lindex $argv 1] "[lindex $argv 2]"
+expect {
+    "*assword*"  {
+         send "$passwd\n"
+         set timeout 300
+         expect "*assword*" { send "isd@temp\n";wait }
+    }
+    "*no)?*"  {
+        send "yes\n"
+        set timeout 300
+        expect {
+            "*assword*" {
+                set timeout 300
+                send "$passwd\n"
+                expect "*assword*" { send "isd@temp\n"; wait }
+            }
+            "*no)?*"  {
+                send "yes\n"
+                set timeout 300
+                expect {
+                    "*assword*" {
+                        send "$passwd\n"
+                        expect "*assword*" { send "isd@temp\n"; wait }
+                    }
+                }
+            }
+        }
+    }
+    timeout {
+        puts "\nTimeout"
+        exit 2
+    }
+}
+puts "\nCommand success"
