@@ -49,7 +49,9 @@ agent请求的任务执行的格式
         "type":"Json"
         "time":23145,
         "operator":"",
-        "ip":""
+        "ip":"10.190.49.69",
+        "port":"9999",
+        "url":"/demo/api/run"
     },
     "body":
     {

@@ -1,6 +1,7 @@
 #!-*-coding:utf8-*-
 import sys
 import traceback
+from comm.log import log
 
 def print_exc_info():
     #step-0:
@@ -18,16 +19,22 @@ def print_exc_info():
     traceback.print_exc()
     
     print "Locals by frame:"
+    log("Locals by frame:")
     for frame in stack:
         print
         print "Frame %s in %s at line %s"%(frame.f_code.co_name,
                                            frame.f_code.co_filename,
                                            frame.f_lineno)
+        log("Frame %s in %s at line %s"%(frame.f_code.co_name,
+                                           frame.f_code.co_filename,
+                                           frame.f_lineno))
         for key,value in frame.f_locals.items():
             print "\t%20s = " %key,
             try:
                 print value
+                log("\t%20s=%s" %(key,value))
             except:
+                log("<ERROR WHILE PRINTING VALUE>")
                 print "<ERROR WHILE PRINTING VALUE>"
                 
 def print_error(data=[]):

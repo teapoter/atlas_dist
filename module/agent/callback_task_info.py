@@ -21,13 +21,16 @@ class CallbackTaskInfo():
         c_ip = dict_info.get("ip","")
         c_port = dict_info.get("port","")
         c_url = dict_info.get("url","")
+        c_result = dict_info.get("result","")
         #
         if not c_method or not c_taskid or not c_detail:
             code = 1
             msg = u"[CallbackTaskInfo]error,miss params[method or taskid or detail] or params is null."
             return (False,code,msg)
         #step-2:
-        self.callback_result(method = c_method,taskid=c_taskid,detail=c_detail,ip=c_ip,port=c_port,url=c_url)
+        self.callback_result(method = c_method,taskid=c_taskid,detail=c_detail,
+                             ip=c_ip,port=c_port,url=c_url,result = c_result)
+        
         return
     
     def callback_result(self,**kwargs):
@@ -37,14 +40,16 @@ class CallbackTaskInfo():
         while 1:
             (result,resp_info)=self._http_obj.call_callback_api(kwargs.get("host")+":"+str(kwargs.get("port")),
                                                             kwargs.get("url"),callback_req)
+            log(str(resp_info))
             if result:
+                log("[CallbackTaskInfo]success.")
                 break
             loop_times=loop_times+1
             if loop_times >500:
                 log("[CallbackTaskInfo]loop too many times,failure,exit")
                 break
             time.sleep(5)
-            log(str(resp_info))
+            
         else:
             log("[CallbackTaskInfo]callback failure.")
         #no add judge result
@@ -64,6 +69,7 @@ class CallbackTaskInfo():
                             "method":kwargs.get("method",""),
                             "type": kwargs.get("type","") if kwargs.get("type","") else "callback",
                             "detail":kwargs.get("detail",[]),
+                            "result":kwargs.get("result",""),
                             "taskid":kwargs.get("taskid","")
                             }
                     }
